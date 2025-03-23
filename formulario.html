@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="registro-container">
+        <h2>Registro de usuario</h2>
+        <form id="formulario">
+            <label for="nombre-completo">Nombre completo:</label> <br>
+            <input type="text" name="nombre" placeholder="Ingresa tu nombre" required><br><br>
+            <label for="nombre-usuario">Nombre de usuario: </label> <br>
+            <input type="text" name="username" placeholder="Ingresa tu usuario:" required> <br><br>
+            <label for="contra">Contraseña:</label> <br>
+            <input type="password" name="contra" required> <br><br>
+            <label for="recontra">Reingrese su contraseña: </label> <br>
+            <input type="password" name="recontra" required> <br><br>
+            <label for="correo">Correo electronico:</label> <br>
+            <input type="email" name="email" placeholder="hola@hola.com" required> <br><br>
+            <label for="fecha-nacimiento">Fecha de nacimiento:</label> <br>
+            <input type="date" name="fecha-nacimiento" max="2013-03-23" required> <br><br>
+            <label for="direccion">Direccion:</label> <br>
+            <input type="text" name="direccion" placeholder="Calle #9999"> <br><br>
+            <input type="submit" value="Registrar">
+            <input type="reset" value="Limpiar">
+        </form>
+    </div>
+
+    <h3>Respuesta de testeo:</h3>
+    <p id="respuesta"></p>
+    
+    <script>
+        $(document).ready(function(){
+                $("input[name='recontra']").on("input", function(){
+                    let password = $("input[name='contra']").val();
+                    let confirmPassword = $(this).val();
+
+                    if (password !== confirmPassword){
+                        $("#respuesta").html("<span style='color: red;'> Las contraseñas no coinciden.</span>")
+                        $("input[type='submit']").prop("disabled", true);
+
+                    }else if ((password.length < 6 || password.length > 18)){
+                        $("#respuesta").html("<span style='color: red;>' La contraseña debe tener un rango de 6 a 18 carácteres.</span>")
+                        $("input[type='submit']").prop("disabled", true);
+                    
+                    }else{
+                        $("#respuesta").html("<span style='color: green;'> Las contraseñas coinciden.</span>")
+                        $("input[type='submit']").prop("disabled", false);
+                    }
+                })
+
+            $("#formulario").submit(function(e){
+                e.preventDefault();
+
+                let password = $("input[name='contra']").val();
+                let confirmPassword = $("input[name='recontra']").val()
+
+                if(password !== confirmPassword){
+                    $("#respuesta").html("<span style='color: red;' Error: las contraseñas no coinciden </span>")
+                    return;
+                }
+
+                $.ajax({
+                    url:"https://jsonplaceholder.typicode.com/posts",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(respuesta){
+                        $("#respuesta").html(`Datos enviados: ${JSON.stringify(respuesta)}`)
+                    },
+                    error: function(){
+                        $("#respuesta").html("Error al enviar datos.")
+                    }
+                })
+
+            })
+        })
+    </script>
+</body>
+</html>
