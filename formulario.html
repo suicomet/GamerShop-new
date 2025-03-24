@@ -219,12 +219,11 @@
                     });
                 });
         
-                // Función para mostrar el modal
                 function mostrarModal(mensaje, esError) {
                     $("#mensaje-modal").text(mensaje);
                     $("#modal-mensaje").show();
         
-                    // Estilos adicionales para mensajes de error (opcional)
+
                     if (esError) {
                         $("#mensaje-modal").css("color", "red");
                     } else {
@@ -232,7 +231,7 @@
                     }
                 }
         
-                // Evento para cerrar el modal
+
                 $(".cerrar-modal, #aceptar-modal").click(function() {
             $("#modal-mensaje").hide();
         });
